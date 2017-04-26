@@ -8,16 +8,16 @@ uses
   VclTee.TeeGDIPlus;
 
 type
-  TRealPoint = record //структура, включающая x и y,
-    x,y:extended;     //являющиеся типом числа с плавающей запятой
+  TRealPoint = record //СЃС‚СЂСѓРєС‚СѓСЂР°, РІРєР»СЋС‡Р°СЋС‰Р°СЏ x Рё y,
+    x,y:extended;     //СЏРІР»СЏСЋС‰РёРµСЃСЏ С‚РёРїРѕРј С‡РёСЃР»Р° СЃ РїР»Р°РІР°СЋС‰РµР№ Р·Р°РїСЏС‚РѕР№
   end;
-  TRealPointArray=array of TRealPoint; //массив структур, включающих x и y
+  TRealPointArray=array of TRealPoint; //РјР°СЃСЃРёРІ СЃС‚СЂСѓРєС‚СѓСЂ, РІРєР»СЋС‡Р°СЋС‰РёС… x Рё y
 
-{Главная форма приложения}
+{Р“Р»Р°РІРЅР°СЏ С„РѕСЂРјР° РїСЂРёР»РѕР¶РµРЅРёСЏ}
   TMainFrm = class(TForm)
-    Chart1: TChart;        //график
-    Series1: TPointSeries; //градуировочная линия
-    Series2: TPointSeries; //оперативная точка
+    Chart1: TChart;        //РіСЂР°С„РёРє
+    Series1: TPointSeries; //РіСЂР°РґСѓРёСЂРѕРІРѕС‡РЅР°СЏ Р»РёРЅРёСЏ
+    Series2: TPointSeries; //РѕРїРµСЂР°С‚РёРІРЅР°СЏ С‚РѕС‡РєР°
     lbl_GradPointPrev: TLabel;
     lbl_GradPointNext: TLabel;
     lbl_Power: TLabel;
@@ -29,21 +29,21 @@ type
     ed_Current: TEdit;
     ed_ControlPotential: TEdit;
     TrackBar1: TTrackBar;
-    Chart2: TChart;           //график для лампы
-    Series3: TFastLineSeries; //характеристика лампы
-    Series4: TPointSeries;    //оперативная точка
-    Button2: TButton;         //загрузить характеристику лампы
-    Button1: TButton;         //загрузить энергетическую характеристику
+    Chart2: TChart;           //РіСЂР°С„РёРє РґР»СЏ Р»Р°РјРїС‹
+    Series3: TFastLineSeries; //С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєР° Р»Р°РјРїС‹
+    Series4: TPointSeries;    //РѕРїРµСЂР°С‚РёРІРЅР°СЏ С‚РѕС‡РєР°
+    Button2: TButton;         //Р·Р°РіСЂСѓР·РёС‚СЊ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєСѓ Р»Р°РјРїС‹
+    Button1: TButton;         //Р·Р°РіСЂСѓР·РёС‚СЊ СЌРЅРµСЂРіРµС‚РёС‡РµСЃРєСѓСЋ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєСѓ
     OpenDialog1: TOpenDialog;
-    Chart3: TChart;           //график временной характеристики
-    Series5: TLineSeries;     //график временной характеристики
+    Chart3: TChart;           //РіСЂР°С„РёРє РІСЂРµРјРµРЅРЅРѕР№ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё
+    Series5: TLineSeries;     //РіСЂР°С„РёРє РІСЂРµРјРµРЅРЅРѕР№ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєРё
     Button3: TButton;
     btnStart: TButton;
     Timer1: TTimer;
     Series6: TLineSeries;
     ed_OperativePower: TEdit;
     Label1: TLabel;
-    Label2: TLabel;         //загрузить временную характеристику
+    Label2: TLabel;         //Р·Р°РіСЂСѓР·РёС‚СЊ РІСЂРµРјРµРЅРЅСѓСЋ С…Р°СЂР°РєС‚РµСЂРёСЃС‚РёРєСѓ
 
 
     procedure Button1Click(Sender: TObject);
@@ -56,18 +56,18 @@ type
   private
   public
   end;
-{глобальные функции}
-{Процедура - реализация метода наименьших квадратов.
-Входные параметры: динамический массив точек.
-Выходные параметры: коэффициенты M, B и R для построения прямой,
-максимально удовлетворяющей множеству точек из входного массива.}
+{РіР»РѕР±Р°Р»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё}
+{РџСЂРѕС†РµРґСѓСЂР° - СЂРµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґР° РЅР°РёРјРµРЅСЊС€РёС… РєРІР°РґСЂР°С‚РѕРІ.
+Р’С…РѕРґРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹: РґРёРЅР°РјРёС‡РµСЃРєРёР№ РјР°СЃСЃРёРІ С‚РѕС‡РµРє.
+Р’С‹С…РѕРґРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹: РєРѕСЌС„С„РёС†РёРµРЅС‚С‹ M, B Рё R РґР»СЏ РїРѕСЃС‚СЂРѕРµРЅРёСЏ РїСЂСЏРјРѕР№,
+РјР°РєСЃРёРјР°Р»СЊРЅРѕ СѓРґРѕРІР»РµС‚РІРѕСЂСЏСЋС‰РµР№ РјРЅРѕР¶РµСЃС‚РІСѓ С‚РѕС‡РµРє РёР· РІС…РѕРґРЅРѕРіРѕ РјР°СЃСЃРёРІР°.}
   procedure LinearLeastSquares(data: TRealPointArray; var M,B, R: extended);
-{Процедура - получение градуировочных данных
-(разбор входящей строки на X и Y)}
+{РџСЂРѕС†РµРґСѓСЂР° - РїРѕР»СѓС‡РµРЅРёРµ РіСЂР°РґСѓРёСЂРѕРІРѕС‡РЅС‹С… РґР°РЅРЅС‹С…
+(СЂР°Р·Р±РѕСЂ РІС…РѕРґСЏС‰РµР№ СЃС‚СЂРѕРєРё РЅР° X Рё Y)}
   procedure GetXY(Val : string; var X, Y: Double);
-  //Возвращает ближайший номер точки серии при движении с лева на право
+  //Р’РѕР·РІСЂР°С‰Р°РµС‚ Р±Р»РёР¶Р°Р№С€РёР№ РЅРѕРјРµСЂ С‚РѕС‡РєРё СЃРµСЂРёРё РїСЂРё РґРІРёР¶РµРЅРёРё СЃ Р»РµРІР° РЅР° РїСЂР°РІРѕ
   function FindGradPointX(p_Series:  TChartSeries; p_Y: Double): Integer;
-  //Возвращает ближайший номер точки серии при движении с лева на право
+  //Р’РѕР·РІСЂР°С‰Р°РµС‚ Р±Р»РёР¶Р°Р№С€РёР№ РЅРѕРјРµСЂ С‚РѕС‡РєРё СЃРµСЂРёРё РїСЂРё РґРІРёР¶РµРЅРёРё СЃ Р»РµРІР° РЅР° РїСЂР°РІРѕ
   function FindGradPointY(p_Series:  TChartSeries; p_X: Double): Integer;
 
   procedure LinearLeastSquaresForSerie(p_Series: TChartSeries; p_GradPointNum: Integer; var M,B,R: extended);
@@ -78,9 +78,9 @@ var
 
 implementation
 
-{$R *.dfm}  //включение ресурсов формы
+{$R *.dfm}  //РІРєР»СЋС‡РµРЅРёРµ СЂРµСЃСѓСЂСЃРѕРІ С„РѕСЂРјС‹
 
-{Загрузка данных}
+{Р—Р°РіСЂСѓР·РєР° РґР°РЅРЅС‹С…}
 procedure LoadGradData(p_Series:  TChartSeries; p_FileName: string; var Y0: Double; var MaxY: Double);
 var
   X, Y: Double;
@@ -90,24 +90,24 @@ var
   SL : TStringList;
 begin
    p_Series.Clear;
-   //Определение объекта списка строк, и указание нашей переменной на него
+   //РћРїСЂРµРґРµР»РµРЅРёРµ РѕР±СЉРµРєС‚Р° СЃРїРёСЃРєР° СЃС‚СЂРѕРє, Рё СѓРєР°Р·Р°РЅРёРµ РЅР°С€РµР№ РїРµСЂРµРјРµРЅРЅРѕР№ РЅР° РЅРµРіРѕ
    SL := TStringList.Create();
    try
-      SL.LoadFromFile(p_FileName); //Загрузка строкового списка из текстового файла
+      SL.LoadFromFile(p_FileName); //Р—Р°РіСЂСѓР·РєР° СЃС‚СЂРѕРєРѕРІРѕРіРѕ СЃРїРёСЃРєР° РёР· С‚РµРєСЃС‚РѕРІРѕРіРѕ С„Р°Р№Р»Р°
       Y0 := 0;
       MaxY := 0;
       for I := 0 to SL.Count -1 do
       begin
-        GetXY(Trim(SL.Strings[I]), X, Y);//Разбор входящей строки на X и Y
+        GetXY(Trim(SL.Strings[I]), X, Y);//Р Р°Р·Р±РѕСЂ РІС…РѕРґСЏС‰РµР№ СЃС‚СЂРѕРєРё РЅР° X Рё Y
         if I = 0 then
           Y0 := Y;
         if Y > MaxY then
           MaxY := Y;
-        p_Series.AddXY(X, Y, '', clTeeColor);//Установка точки на графике
+        p_Series.AddXY(X, Y, '', clTeeColor);//РЈСЃС‚Р°РЅРѕРІРєР° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ
       end;
     finally
-      FreeAndNil(SL); {освобождение памяти,
-      используемой объектом, и устанавливление объектной ссылки на ноль.}
+      FreeAndNil(SL); {РѕСЃРІРѕР±РѕР¶РґРµРЅРёРµ РїР°РјСЏС‚Рё,
+      РёСЃРїРѕР»СЊР·СѓРµРјРѕР№ РѕР±СЉРµРєС‚РѕРј, Рё СѓСЃС‚Р°РЅР°РІР»РёРІР»РµРЅРёРµ РѕР±СЉРµРєС‚РЅРѕР№ СЃСЃС‹Р»РєРё РЅР° РЅРѕР»СЊ.}
     end;
 end;
 
@@ -118,17 +118,17 @@ begin
   if OpenDialog1.Execute then
   begin
     LoadGradData(Series1, OpenDialog1.FileName, MinY, MaxY);
-    TrackBar1.Max := Round(MaxY) - 1; //ограничение сверху
+    TrackBar1.Max := Round(MaxY) - 1; //РѕРіСЂР°РЅРёС‡РµРЅРёРµ СЃРІРµСЂС…Сѓ
     TrackBar1.Min := Round(MinY) + 1;
-    TrackBar1.Position := 0;   //устанвка начального значения
-    {TrdckBar активен только когда оба графика загружены}
+    TrackBar1.Position := 0;   //СѓСЃС‚Р°РЅРІРєР° РЅР°С‡Р°Р»СЊРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ
+    {TrdckBar Р°РєС‚РёРІРµРЅ С‚РѕР»СЊРєРѕ РєРѕРіРґР° РѕР±Р° РіСЂР°С„РёРєР° Р·Р°РіСЂСѓР¶РµРЅС‹}
   //  TrackBar1.Enabled := (Series1.Count > 0) and (Series3.Count > 0);
     TrackBar1.Update;
   end;
 end;
 
-{Нахождение между какими точками на градуировачной кривой лежит
-входное значение}
+{РќР°С…РѕР¶РґРµРЅРёРµ РјРµР¶РґСѓ РєР°РєРёРјРё С‚РѕС‡РєР°РјРё РЅР° РіСЂР°РґСѓРёСЂРѕРІР°С‡РЅРѕР№ РєСЂРёРІРѕР№ Р»РµР¶РёС‚
+РІС…РѕРґРЅРѕРµ Р·РЅР°С‡РµРЅРёРµ}
 function FindGradPointX(p_Series:  TChartSeries; p_Y: Double): Integer;
 var
   I: Integer;
@@ -145,13 +145,13 @@ begin
    end;
   except on E: Exception do
    begin
-    ShowMessage(E.Message);  //обработка исключительных ситуаций
+    ShowMessage(E.Message);  //РѕР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РёС‚РµР»СЊРЅС‹С… СЃРёС‚СѓР°С†РёР№
    end;
   end;
 end;
 
-{Нахождение точки на градуировачной кривой, которая лежит слева
-от входного значения}
+{РќР°С…РѕР¶РґРµРЅРёРµ С‚РѕС‡РєРё РЅР° РіСЂР°РґСѓРёСЂРѕРІР°С‡РЅРѕР№ РєСЂРёРІРѕР№, РєРѕС‚РѕСЂР°СЏ Р»РµР¶РёС‚ СЃР»РµРІР°
+РѕС‚ РІС…РѕРґРЅРѕРіРѕ Р·РЅР°С‡РµРЅРёСЏ}
 function FindGradPointY(p_Series:  TChartSeries; p_X: Double): Integer;
 var
   I: Integer;
@@ -168,7 +168,7 @@ begin
    end;
   except on E: Exception do
    begin
-    ShowMessage(E.Message);  //обработка исключительных ситуаций
+    ShowMessage(E.Message);  //РѕР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РёС‚РµР»СЊРЅС‹С… СЃРёС‚СѓР°С†РёР№
    end;
   end;
 end;
@@ -176,7 +176,7 @@ end;
 
 procedure LinearLeastSquaresForSerie(p_Series: TChartSeries; p_GradPointNum: Integer; var M,B,R: extended);
 var
-  //массив из 2 точек
+  //РјР°СЃСЃРёРІ РёР· 2 С‚РѕС‡РµРє
   data: TRealPointArray;
   X_prev, Y_prev, X_next, Y_next : Double;
 begin
@@ -188,20 +188,20 @@ begin
      if p_GradPointNum = 0 then exit;
      if p_GradPointNum >= p_Series.Count then exit;
 
-   //в массиве перавя точка имеет индех 0
+   //РІ РјР°СЃСЃРёРІРµ РїРµСЂР°РІСЏ С‚РѕС‡РєР° РёРјРµРµС‚ РёРЅРґРµС… 0
      Y_prev := p_Series.YValue[p_GradPointNum-1];
      X_prev := p_Series.XValue[p_GradPointNum-1];
 
      Y_next := p_Series.YValue[p_GradPointNum];
      X_next := p_Series.XValue[p_GradPointNum];
 
-     //при движении по горизонтали Y не меняется
+     //РїСЂРё РґРІРёР¶РµРЅРёРё РїРѕ РіРѕСЂРёР·РѕРЅС‚Р°Р»Рё Y РЅРµ РјРµРЅСЏРµС‚СЃСЏ
      if Y_prev = Y_next then
      begin
       Exit;
      end;
 
-      //установим длину динамического массива в две точки
+      //СѓСЃС‚Р°РЅРѕРІРёРј РґР»РёРЅСѓ РґРёРЅР°РјРёС‡РµСЃРєРѕРіРѕ РјР°СЃСЃРёРІР° РІ РґРІРµ С‚РѕС‡РєРё
       setlength(data, 2);
 
       data[0].y := Y_prev;
@@ -209,7 +209,7 @@ begin
       data[1].y := Y_next;
       data[1].x := X_next;
 
-      //вычисление коэффициентов
+      //РІС‹С‡РёСЃР»РµРЅРёРµ РєРѕСЌС„С„РёС†РёРµРЅС‚РѕРІ
       LinearLeastSquares(data, M, B, R);
 
 end;
@@ -222,24 +222,24 @@ var
   M,B, R: extended;
 begin
   try
-    //FindGradPoint возвращает значения от 1
+    //FindGradPoint РІРѕР·РІСЂР°С‰Р°РµС‚ Р·РЅР°С‡РµРЅРёСЏ РѕС‚ 1
     GradPoint := FindGradPointX(Series1, TrackBar1.Position);
     if  GradPoint = 0 then exit;
-    {показ между какими точками лежит оперативная точка}
-    lbl_GradPointPrev.Caption := IntToStr(GradPoint);   //слева
-    lbl_GradPointNext.Caption := IntToStr(GradPoint+1); //справа
+    {РїРѕРєР°Р· РјРµР¶РґСѓ РєР°РєРёРјРё С‚РѕС‡РєР°РјРё Р»РµР¶РёС‚ РѕРїРµСЂР°С‚РёРІРЅР°СЏ С‚РѕС‡РєР°}
+    lbl_GradPointPrev.Caption := IntToStr(GradPoint);   //СЃР»РµРІР°
+    lbl_GradPointNext.Caption := IntToStr(GradPoint+1); //СЃРїСЂР°РІР°
 
     LinearLeastSquaresForSerie(Series1, GradPoint, M,B,R);
     if M = 0 then exit;
 
-    {y = Mx + B, следовательно x =(Y - B)/M }
+    {y = Mx + B, СЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕ x =(Y - B)/M }
     Y_calc := TrackBar1.Position;
     X_calc := (Y_calc - B)/M;
 
-    //установка точки на графике (очищение серии и добавка новой точки)
+    //СѓСЃС‚Р°РЅРѕРІРєР° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ (РѕС‡РёС‰РµРЅРёРµ СЃРµСЂРёРё Рё РґРѕР±Р°РІРєР° РЅРѕРІРѕР№ С‚РѕС‡РєРё)
     Series2.Clear;
     Series2.AddXY(X_calc, Y_calc, '');
-    {показ значений в элементах отображения
+    {РїРѕРєР°Р· Р·РЅР°С‡РµРЅРёР№ РІ СЌР»РµРјРµРЅС‚Р°С… РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ
     brighteness, current}
     ed_Power.Text := FloatToStr(Y_calc);
     ed_Current.Text := FloatToStrF(X_calc, ffFixed, 4, 4);
@@ -251,20 +251,20 @@ begin
 
     //y = Mx + B
     Y_Poten_calc := M * X_Poten_calc + B;
-    //установка точки на графике (очищение серии и добавка новой точки)
+    //СѓСЃС‚Р°РЅРѕРІРєР° С‚РѕС‡РєРё РЅР° РіСЂР°С„РёРєРµ (РѕС‡РёС‰РµРЅРёРµ СЃРµСЂРёРё Рё РґРѕР±Р°РІРєР° РЅРѕРІРѕР№ С‚РѕС‡РєРё)
     Series4.Clear;
     Series4.AddXY(X_Poten_calc, Y_Poten_calc);
-    {показ control potential в элементе отображения}
+    {РїРѕРєР°Р· control potential РІ СЌР»РµРјРµРЅС‚Рµ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ}
     ed_ControlPotential.Text := FloatToStrF(Y_Poten_calc, ffFixed, 4, 4);
   except on E: Exception do
    begin
-    ShowMessage(E.Message);  //обработка исключительных ситуаций
+    ShowMessage(E.Message);  //РѕР±СЂР°Р±РѕС‚РєР° РёСЃРєР»СЋС‡РёС‚РµР»СЊРЅС‹С… СЃРёС‚СѓР°С†РёР№
    end;
   end;
 end;
 
 
-{Процедура - реализация метода наименьших квадратов.}
+{РџСЂРѕС†РµРґСѓСЂР° - СЂРµР°Р»РёР·Р°С†РёСЏ РјРµС‚РѕРґР° РЅР°РёРјРµРЅСЊС€РёС… РєРІР°РґСЂР°С‚РѕРІ.}
 procedure LinearLeastSquares(data: TRealPointArray; var M,B,R: extended);
  {Line "Y = mX + b" is linear least squares line for the input array, "data",
   of TRealPoint}
@@ -273,26 +273,26 @@ var
   Sx,Sy:extended;
   n, i: Integer;
 begin
-  n := Length(data); {количество точек}
+  n := Length(data); {РєРѕР»РёС‡РµСЃС‚РІРѕ С‚РѕС‡РµРє}
   SumX := 0.0;   SumY := 0.0;
   SumX2 := 0.0;  SumY2:=0.0;
   SumXY := 0.0;
 
   for i := 0 to n - 1 do
   begin
-    //слагаем все X
+    //СЃР»Р°РіР°РµРј РІСЃРµ X
     SumX := SumX + data[i].X;
-    //слагаем все Y
+    //СЃР»Р°РіР°РµРј РІСЃРµ Y
     SumY := SumY + data[i].Y;
-    //слагаем квадраты X
+    //СЃР»Р°РіР°РµРј РєРІР°РґСЂР°С‚С‹ X
     SumX2 := SumX2 + data[i].X*data[i].X;
-    //слагаем квадраты Y
+    //СЃР»Р°РіР°РµРј РєРІР°РґСЂР°С‚С‹ Y
     SumY2 := SumY2 + data[i].Y*data[i].Y;
-    //слагаем произведения X и Y
+    //СЃР»Р°РіР°РµРј РїСЂРѕРёР·РІРµРґРµРЅРёСЏ X Рё Y
     SumXY := SumXY + data[i].X*data[i].Y;
   end;
-{Проверка на то, что массив не состоит из точек,
-у которых одинаковые координаты на всех}
+{РџСЂРѕРІРµСЂРєР° РЅР° С‚Рѕ, С‡С‚Рѕ РјР°СЃСЃРёРІ РЅРµ СЃРѕСЃС‚РѕРёС‚ РёР· С‚РѕС‡РµРє,
+Сѓ РєРѕС‚РѕСЂС‹С… РѕРґРёРЅР°РєРѕРІС‹Рµ РєРѕРѕСЂРґРёРЅР°С‚С‹ РЅР° РІСЃРµС…}
   if (n*SumX2=SumX*SumX) or (n*SumY2=SumY*SumY)
   then
   begin
@@ -300,27 +300,27 @@ begin
     M:=0;
     B:=0;
   end
-  else{Когда проходим проверку, реализуем алгоритм МНК}
+  else{РљРѕРіРґР° РїСЂРѕС…РѕРґРёРј РїСЂРѕРІРµСЂРєСѓ, СЂРµР°Р»РёР·СѓРµРј Р°Р»РіРѕСЂРёС‚Рј РњРќРљ}
   begin
-    M:=((n * SumXY) - (SumX * SumY)) / ((n * SumX2) - (SumX * SumX)); {Наклон прямой (M)}
-    B:=(SumY-M*SumX)/n;  {Отступ прямой (B)}
+    M:=((n * SumXY) - (SumX * SumY)) / ((n * SumX2) - (SumX * SumX)); {РќР°РєР»РѕРЅ РїСЂСЏРјРѕР№ (M)}
+    B:=(SumY-M*SumX)/n;  {РћС‚СЃС‚СѓРї РїСЂСЏРјРѕР№ (B)}
     Sx:=sqrt(SumX2-sqr(SumX)/n);
     Sy:=Sqrt(SumY2-sqr(SumY)/n);
-    r:=(SumXY-SumX*SumY/n)/(Sx*Sy); //коэффициент корреляции
+    r:=(SumXY-SumX*SumY/n)/(Sx*Sy); //РєРѕСЌС„С„РёС†РёРµРЅС‚ РєРѕСЂСЂРµР»СЏС†РёРё
   end;
 end;
 
-// разбор входящей строки на X и Y
+// СЂР°Р·Р±РѕСЂ РІС…РѕРґСЏС‰РµР№ СЃС‚СЂРѕРєРё РЅР° X Рё Y
 procedure GetXY(Val : string; var X, Y: Double);
 var
   temp : string;
   DelimPos : Integer;
 begin
-  DelimPos := Pos(';', Val); //поиск позиции разделителя (;)
+  DelimPos := Pos(';', Val); //РїРѕРёСЃРє РїРѕР·РёС†РёРё СЂР°Р·РґРµР»РёС‚РµР»СЏ (;)
   temp := Copy(Val, 0, DelimPos - 1);
-  X := StrToFloat(temp);     //X-число до разделителя
+  X := StrToFloat(temp);     //X-С‡РёСЃР»Рѕ РґРѕ СЂР°Р·РґРµР»РёС‚РµР»СЏ
   temp := Copy(Val, DelimPos+1, 999);
-  Y := StrToFloat(temp);     //Y-число после разделителя
+  Y := StrToFloat(temp);     //Y-С‡РёСЃР»Рѕ РїРѕСЃР»Рµ СЂР°Р·РґРµР»РёС‚РµР»СЏ
 end;
 
 procedure TMainFrm.Button2Click(Sender: TObject);
